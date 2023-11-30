@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: pg1
+    restart: always
+    environment:
+      POSTGRES_DB: zoo
+      POSTGRES_USER: bob
+      POSTGRES_PASSWORD: bobiscool123
+    volumes:
+      - pg1_data:/var/lib/postgresql/data
+
+volumes:
+  pg1_data:
+
