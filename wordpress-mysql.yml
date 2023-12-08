@@ -1,0 +1,48 @@
+version: '3'
+
+# Services
+services:
+  # Database
+  db:
+    image: mysql:latest
+    container_name: mysql1
+    ports: 
+      - '3306:3306'
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: 
+      MYSQL_USER: 
+      MYSQL_PASSWORD: 
+    networks:
+      - wpsite
+
+  # Wordpress
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    container_name: web1  
+    ports:
+      - '8000:80'
+      - '8443:443'
+    restart: always
+    volumes: 
+      - wp_data:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db:3306  
+      WORDPRESS_DB_USER: 
+      WORDPRESS_DB_PASSWORD: 
+    networks:
+      - wpsite
+
+# Volumes
+volumes:
+  db_data:
+  wp_data:
+
+# Networks  
+networks:
+  wpsite:
