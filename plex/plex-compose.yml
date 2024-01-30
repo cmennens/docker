@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - VERSION=latest
+      - PLEX_CLAIM=""
+    volumes:
+      - /mnt/docker/plex/config:/config
+      - /mnt/plex/movies:/movies
+      - /mnt/plex/series:/tv
+      - /mnt/plex/music:/music
+    restart: unless-stopped
