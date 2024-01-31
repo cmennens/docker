@@ -15,4 +15,6 @@ services:
       - /mnt/plex/movies:/movies
       - /mnt/plex/series:/tv
       - /mnt/plex/music:/music
+    tmpfs:
+      - /transcode                            # mount /transcode to in-memory for faster performance
     restart: unless-stopped
