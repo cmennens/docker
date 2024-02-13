@@ -11,10 +11,11 @@ services:
       - VERSION=latest
       - PLEX_CLAIM=""
     volumes:
-      - /mnt/docker/plex/config:/config
-      - /mnt/plex/movies:/movies
-      - /mnt/plex/series:/tv
-      - /mnt/plex/music:/music
+      - /volume1/docker/plex/config:/config
+      - /volume1/plex/movies:/movies
+      - /volume1/plex/series:/tv
+      - /volume1/plex/music:/music
+      - /dev/dri:/dev/dri                     # mount Intel Quic Sync for hardware transoding. Intel CPUs ONLY!!!
     tmpfs:
       - /transcode                            # mount /transcode to in-memory for faster performance
     restart: unless-stopped
