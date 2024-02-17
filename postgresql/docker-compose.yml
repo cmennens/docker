@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:latest
     container_name: db1
-    environment:
+    environment:           # env variables are optional since existing volume is established
       POSTGRES_DB:         # add your db name
       POSTGRES_USER:       # add your username
       POSTGRES_PASSWORD:   # add username password
