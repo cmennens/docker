@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: db1
+    environment:
+      POSTGRES_DB:         # add your db name
+      POSTGRES_USER:       # add your username
+      POSTGRES_PASSWORD:   # add username password
+    volumes:
+      - /home/cmennens/docker/volumes/postgres/db1/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
