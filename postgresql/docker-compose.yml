@@ -1,15 +1,16 @@
-version: '3'
+version: '3.8'
 
 services:
   postgres:
     image: postgres:latest
     container_name: db1
-    environment:           # env variables are optional since existing volume is established
-      POSTGRES_DB:         # add your db name
-      POSTGRES_USER:       # add your username
-      POSTGRES_PASSWORD:   # add username password
+    environment:           # env variables are optional since existing volume is established.
+      POSTGRES_DB:         # add your db name.
+      POSTGRES_USER:       # add your username.
+      POSTGRES_PASSWORD:   # add username password.
     volumes:
-      - /home/cmennens/docker/volumes/postgres/db1/data:/var/lib/postgresql/data
+      - /home/cmennens/docker/volumes/postgres/db1/data:/var/lib/postgresql/data    # this is a "host" volume (anon|host|named).
+    networks: postgresql_network
     ports:
       - "5432:5432"
     restart: unless-stopped
