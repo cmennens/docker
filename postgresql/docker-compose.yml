@@ -10,7 +10,12 @@ services:
       POSTGRES_PASSWORD:   # add username password.
     volumes:
       - /home/cmennens/docker/volumes/postgres/db1/data:/var/lib/postgresql/data    # this is a "host" volume (anon|host|named).
-    networks: postgresql_network
+      - postgresql_data:/var/lib/postgresql/data   # this is a "named" volume stored in dockers default volume directory.
+    networks: 
+      - postgresql_network
     ports:
       - "5432:5432"
     restart: unless-stopped
+
+networks:
+  postgresql_network:
