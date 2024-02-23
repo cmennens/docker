@@ -8,8 +8,11 @@ services:
       - "27017:27017"
     volumes:
       - mongo1_data:/data/db
-    restart: unless-stopped
+      - mongo1_config:/data/configdb
+    restart: always
 
 volumes:
   mongo1_data:
+    driver: local
+  mongo1_config:
     driver: local
