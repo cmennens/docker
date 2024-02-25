@@ -17,5 +17,6 @@ volumes:
   mongodb_config:
     driver: local
 
-networks: 
-      - mongodb_network
+networks:
+  mongodb_network:
+    name: mongodb_network
