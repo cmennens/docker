@@ -3,20 +3,25 @@ version: '3.8'
 services:
   mongodb:
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongo1
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 
+      MONGO_INITDB_ROOT_PASSWORD: 
     ports:
       - "27017:27017"
+    networks:
+      - mongodb_network            ### depends on a network resource pre-existing or defined below. ###
     volumes:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
-    restart: always
-
-volumes:
-  mongodb_data:
-    driver: local
-  mongodb_config:
-    driver: local
+    restart: unless-stopped
 
 networks:
   mongodb_network:
     name: mongodb_network
+
+volumes:
+  mongodb_data:
+    name: mongodb_data_volume
+  mongodb_config:
+    name: mongodb_config_volume
