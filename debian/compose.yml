@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  debian:
+    image: debian:latest
+    container_name: deb-1
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    network_mode: host
+  # networks:
+   #  - some_network 
+    volumes:
+      - debian_data_volume:/data
+
+volumes:
+  debian_data_volume:
+    name: debian_data_volume
+
+# networks:
+#   some_network:
+#     name: some_network
