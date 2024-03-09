@@ -1,6 +1,6 @@
 1 - Deploy docker-compose on primary:
 
-        ```docker run -d -it\
+        docker run -d -it\
             --name postgres-1 \
             --net postgres \
             -e POSTGRES_USER=cmennens \
@@ -12,7 +12,7 @@
             -v ${PWD}/postgres-1/archive:/mnt/server/archive \
             -p 5432:5432\
             postgres:latest \
-            -c 'config_file=/config/postgresql.conf'```
+            -c 'config_file=/config/postgresql.conf'
 
 2 - Create replication role:
 
