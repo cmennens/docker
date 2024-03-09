@@ -10,7 +10,7 @@
             -v ${PWD}/postgres-1/pgdata:/data \
             -v ${PWD}/postgres-1/config:/config \
             -v ${PWD}/postgres-1/archive:/mnt/server/archive \
-            -p 5432:5432\
+            -p 5432:5432 \
             postgres:latest \
             -c 'config_file=/config/postgresql.conf'
 
