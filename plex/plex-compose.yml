@@ -15,7 +15,7 @@ services:
       - /volume1/plex/movies:/movies:ro
       - /volume1/plex/series:/tv:ro
       - /volume1/plex/music:/music:ro
-      - /dev/dri:/dev/dri                     # mount Intel Quic Sync for hardware transoding. Intel CPUs ONLY!!!
+      - /dev/dri:/dev/dri                     # mount Intel Quick Sync for hardware transoding. Intel CPU's only.
     tmpfs:
       - /transcode                            # mount /transcode to in-memory for faster performance
     restart: unless-stopped
