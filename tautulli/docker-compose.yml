@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  tautulli:
+    image: linuxserver/tautulli
+    container_name: 
+    restart: unless-stopped
+    volumes:
+      - tautulli_config:/config
+      - /path/to/media:/media
+    ports:
+      - "8181:8181"
+    networks:
+      - tautulli_network
+
+networks:
+  tautulli_network:
+    driver: bridge
+
+volumes:
+  tautulli_config:
+    name: tautulli_config
