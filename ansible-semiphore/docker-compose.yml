@@ -1,43 +1,52 @@
----
-volumes:
-  semaphore-mysql:
-    driver: local
+version: '3.8'
 services:
-  mysql:
-    image: mysql:latest
-    hostname: mysql
-    volumes:
-      - semaphore-mysql:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-      - MYSQL_DATABASE=semaphore
-      - MYSQL_USER=semaphore
-      - MYSQL_PASSWORD=secret-password  # change!
+  postgres:
+    container_name: 
     restart: unless-stopped
+    networks:
+      - ansible_network
+    ports:
+      - 5432:5432
+    image: postgres:latest
+    volumes: 
+      - postgres_volume:/var/lib/postgresql/data
+    environment:
+     POSTGRES_USER: 
+     POSTGRES_PASSWORD: 
+     POSTGRES_DB: 
+  
   semaphore:
-    container_name: ansiblesemaphore
-    image: semaphoreui/semaphore:latest
-    user: "${UID}:${GID}"
+    container_name: 
+    restart: unless-stopped
+    networks:
+      - ansible_network
     ports:
       - 3000:3000
+    image: semaphoreui/semaphore:latest
+    volumes: 
+      - ansible_volume:/data
     environment:
-      - SEMAPHORE_DB_USER=semaphore
-      - SEMAPHORE_DB_PASS=secret-password  # change!
-      - SEMAPHORE_DB_HOST=mysql
-      - SEMAPHORE_DB_PORT=3306
-      - SEMAPHORE_DB_DIALECT=mysql
-      - SEMAPHORE_DB=semaphore
-      - SEMAPHORE_PLAYBOOK_PATH=/tmp/semaphore/
-      - SEMAPHORE_ADMIN_PASSWORD=secret-admin-password  # change!
-      - SEMAPHORE_ADMIN_NAME=admin
-      - SEMAPHORE_ADMIN_EMAIL=admin@localhost
-      - SEMAPHORE_ADMIN=admin
-      - SEMAPHORE_ACCESS_KEY_ENCRYPTION=  # add to your access key encryption using this cmd: "head -c32 /dev/urandom | base64"
-      - ANSIBLE_HOST_KEY_CHECKING=false  # (optional) change to true if you want to enable host key checking
-    volumes:
-      - ./inventory/:/inventory:ro
-      - ./authorized-keys/:/authorized-keys:ro
-      - ./config/:/etc/semaphore:rw
-    restart: unless-stopped
+      SEMAPHORE_DB_USER: 
+      SEMAPHORE_DB_PASS: 
+      SEMAPHORE_DB_HOST: 
+      SEMAPHORE_DB_PORT: 
+      SEMAPHORE_DB_DIALECT: postgres 
+      SEMAPHORE_DB: 
+      SEMAPHORE_PLAYBOOK_PATH: /tmp/semaphore/
+      SEMAPHORE_ADMIN_PASSWORD: 
+      SEMAPHORE_ADMIN_NAME: 
+      SEMAPHORE_ADMIN_EMAIL: 
+      SEMAPHORE_ADMIN: 
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION: 
+      SEMAPHORE_LDAP_ACTIVATED: 'no'
+      ANSIBLE_HOST_KEY_CHECKING: 'false'
     depends_on:
-      - mysql
+      - postgres 
+
+networks:
+  ansible_network:
+    driver: bridge
+
+volumes:
+  postgres_volume:
+  ansible_volume:
