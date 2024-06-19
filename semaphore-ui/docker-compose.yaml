@@ -1,31 +1,33 @@
-version: '3.8'
 services:
   postgres:
-    container_name: 
+    container_name: semaphore_db
+    hostname: semaphore_db
     restart: unless-stopped
     networks:
-      - ansible_network
+      - semaphore_network
     ports:
       - 5432:5432
     image: postgres:latest
     volumes: 
-      - postgres_volume:/var/lib/postgresql/data
+      - postgres_data_vol:/var/lib/postgresql/data
+      - postgres_logs_vol:/var/lib/postgresql/logs
       - /path/to/requirements.txt:/etc/semaphore/requirements.txt   # Change the source to your local path.
     environment:
-     POSTGRES_USER: 
-     POSTGRES_PASSWORD: 
-     POSTGRES_DB: 
+     POSTGRES_USER: secet.PG_USER
+     POSTGRES_PASSWORD: secret.PG_PW
+     POSTGRES_DB: semaphore_db
   
   semaphore:
-    container_name: 
+    container_name: semaphore_ui
+    hostname: semaphore_ui
     restart: unless-stopped
     networks:
-      - ansible_network
+      - semaphore_network
     ports:
       - 3000:3000
     image: semaphoreui/semaphore:latest
     volumes: 
-      - ansible_volume:/data
+      - semaphore_vol:/data
     environment:
       SEMAPHORE_DB_USER: 
       SEMAPHORE_DB_PASS: 
@@ -49,5 +51,6 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_volume:
-  ansible_volume:
+  postgres_data_vol:
+  postgres_logs_vol:
+  semaphore_vol:
