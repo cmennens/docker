@@ -10,6 +10,7 @@ services:
     image: postgres:latest
     volumes: 
       - postgres_volume:/var/lib/postgresql/data
+      - /path/to/requirements.txt:/etc/semaphore/requirements.txt   # Change the source to your local path.
     environment:
      POSTGRES_USER: 
      POSTGRES_PASSWORD: 
