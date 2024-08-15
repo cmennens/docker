@@ -1,15 +1,30 @@
-version: '3'
-
+---
 services:
   portainer:
-    image: portainer/portainer-ce:latest    # will use the latest tag.
+    image: portainer/portainer-ce:latest
     container_name: portainer
     ports:
       - "9000:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
+      - portainer_volume:/data
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=43200
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_INCLUDE_STOPPED=true
+      - NO_COLOR=false
+      - WATCHTOWER_CLEANUP=true
+      - TZ=America/Chicago
+      - WATCHTOWER_NOTIFICATIONS=email
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
 volumes:
-  portainer_data:    # creates a volume in the default docker volume directory which mounts to /data on the container.
+  portainer_volume:
+...
