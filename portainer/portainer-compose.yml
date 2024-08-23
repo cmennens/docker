@@ -1,20 +1,25 @@
 ---
 services:
-  watchtower:
-    image: containrrr/watchtower:latest
-    container_name: watchtower
-    environment:
-      - WATCHTOWER_POLL_INTERVAL=43200
-      - WATCHTOWER_LABEL_ENABLE=true
-      - WATCHTOWER_INCLUDE_STOPPED=true
-      - NO_COLOR=false
-      - WATCHTOWER_CLEANUP=true
-      - TZ=America/Chicago
-      - WATCHTOWER_NOTIFICATIONS=email
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    ports:
+      - "9000:9000"
+      - "8000:8000"
+      - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
+      - portainer_volume:/data
+    networks:
+      - portainer_network
+    restart: always
 
 volumes:
   portainer_volume:
+
+networks:
+  portainer_network:
+    driver: bridge  # Specify a network driver (optional, but sometimes required)
 ...
