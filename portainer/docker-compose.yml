@@ -3,6 +3,7 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
+    hostname: portainer
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     ports:
