@@ -3,6 +3,8 @@ services:
     container_name: semaphore_db
     hostname: semaphore_db
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - semaphore_network
     ports:
@@ -10,7 +12,6 @@ services:
     image: postgres:latest
     volumes: 
       - postgres_data_vol:/var/lib/postgresql/data
-      - postgres_logs_vol:/var/lib/postgresql/logs
       - /path/to/requirements.txt:/etc/semaphore/requirements.txt   # Change the source to your local path.
     environment:
      POSTGRES_USER: secet.PG_USER
