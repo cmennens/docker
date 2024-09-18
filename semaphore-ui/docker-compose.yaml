@@ -1,57 +1,57 @@
+---
 services:
   postgres:
     container_name: semaphore_db
     hostname: semaphore_db
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - semaphore_network
     ports:
       - 5432:5432
     image: postgres:latest
-    volumes: 
-      - postgres_data_vol:/var/lib/postgresql/data
-      - /path/to/requirements.txt:/etc/semaphore/requirements.txt   # Change the source to your local path.
+    volumes:
+      - semaphore_db_config:/var/lib/postgresql/data
     environment:
-     POSTGRES_USER: secet.PG_USER
-     POSTGRES_PASSWORD: secret.PG_PW
-     POSTGRES_DB: semaphore_db
-  
+      POSTGRES_USER: semaphore
+      POSTGRES_PASSWORD: {{ pg_pw }}
+      POSTGRES_DB: semaphore_db
+
   semaphore:
     container_name: semaphore_ui
     hostname: semaphore_ui
     restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
     networks:
       - semaphore_network
     ports:
       - 3000:3000
-    image: semaphoreui/semaphore:latest
-    volumes: 
-      - semaphore_vol:/data
+    volumes:
+      - semaphore_config:/etc/semaphore
     environment:
-      SEMAPHORE_DB_USER: 
-      SEMAPHORE_DB_PASS: 
-      SEMAPHORE_DB_HOST: 
-      SEMAPHORE_DB_PORT: 
-      SEMAPHORE_DB_DIALECT: postgres 
-      SEMAPHORE_DB: 
+      SEMAPHORE_DB_USER: semaphore
+      SEMAPHORE_DB_PASS: {{ pg_pw }}
+      SEMAPHORE_DB_HOST: postgres
+      SEMAPHORE_DB_PORT: 5432
+      SEMAPHORE_DB_DIALECT: postgres
+      SEMAPHORE_DB: semaphore_db
       SEMAPHORE_PLAYBOOK_PATH: /tmp/semaphore/
-      SEMAPHORE_ADMIN_PASSWORD: 
-      SEMAPHORE_ADMIN_NAME: 
-      SEMAPHORE_ADMIN_EMAIL: 
-      SEMAPHORE_ADMIN: 
-      SEMAPHORE_ACCESS_KEY_ENCRYPTION: 
+      SEMAPHORE_ADMIN_PASSWORD: {{ ui_pw }}
+      SEMAPHORE_ADMIN_NAME: Semaphore UI Admin
+      SEMAPHORE_ADMIN_EMAIL: semaphore@hubgroup.com
+      SEMAPHORE_ADMIN: semaphore
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION:
       SEMAPHORE_LDAP_ACTIVATED: 'no'
       ANSIBLE_HOST_KEY_CHECKING: 'false'
     depends_on:
-      - postgres 
+      - postgres
 
 networks:
-  ansible_network:
+  semaphore_network:
     driver: bridge
 
 volumes:
-  postgres_data_vol:
-  postgres_logs_vol:
-  semaphore_vol:
+  semaphore_db_config:
+  semaphore_config:
+...
