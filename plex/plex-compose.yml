@@ -1,21 +1,27 @@
-version: "3.8"
+---
 services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
+    hostname: plex
     network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
       - VERSION=latest
-      - PLEX_CLAIM=""
+      - PLEX_CLAIM="claim-12345"
     volumes:
-      - /volume1/docker/plex/config:/config
-      - /volume1/plex/movies:/movies:ro
-      - /volume1/plex/series:/tv:ro
-      - /volume1/plex/music:/music:ro
-      - /dev/dri:/dev/dri                     # mount Intel Quick Sync for hardware transoding. Intel CPU's only.
+      - /home/cmennens/docker/plex/config:/config
+      - /mnt/data/movies:/movies:ro
+      - /dev/dri:/dev/dri 
     tmpfs:
-      - /transcode                            # mount /transcode to in-memory for faster performance
+      - /transcode
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:32400/web"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+...
