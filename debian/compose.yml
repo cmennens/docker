@@ -1,5 +1,4 @@
-version: '3.8'
-
+---
 services:
   debian:
     image: debian:latest
@@ -20,3 +19,4 @@ volumes:
 # networks:
 #   some_network:
 #     name: some_network
+...
