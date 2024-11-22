@@ -3,6 +3,7 @@ services:
   tautulli:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
+    hostname: tautulli
     restart: unless-stopped
     network_mode: host
     volumes:
