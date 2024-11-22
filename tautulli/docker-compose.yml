@@ -4,17 +4,14 @@ services:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+    network_mode: host
     volumes:
       - /home/cmennens/docker/tautulli/config:/config
-      - /home/cmennens/docker/plex/movies:/media
+      - /mnt/plex/movies:/media
     environment:
       - PUID=1000
-      - GUID=1000
+      - GUID=100
       - TZ=America/Chicago
-    ports:
-      - 8181:8181
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8181"]
       interval: 1m
