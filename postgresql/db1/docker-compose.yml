@@ -1,0 +1,53 @@
+---
+services:
+  postgres:
+    container_name: db1
+    hostname: db1
+    restart: unless-stopped
+    image: postgres:17
+    volumes:
+      - /mnt/docker/postgres/db1/data:/var/lib/postgresql/data
+      - /mnt/docker/postgres/db1/logs:/var/lib/postgresql/data/log
+    shm_size: 512mb
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    command: >
+      postgres
+      -c logging_collector=on
+      -c log_destination=stderr
+      -c log_statement=all
+      -c log_min_duration_statement=0
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+    networks:
+      - backend
+
+  pghero:
+    container_name: pghero
+    image: ankane/pghero
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://${PGHERO_USER}:${PGHERO_PASSWORD}@db1:5432/${POSTGRES_DB}
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
+    external: true
+...
